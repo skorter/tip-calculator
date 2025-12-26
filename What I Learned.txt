@@ -1,0 +1,41 @@
+Inputs, State & DOM
+- keep element references and read their value when needed
+-> dont store parsed numbers at the top level
+
+- use and init step to set safe defaults so first runs dont produce NaN or spam alerts
+
+
+Parsing & Validation:
+- always trim -> parse -> validate in one place
+1) we trim the numbers -> const billRaw = billElement.value.trim();
+2) we convert them -> let bill = parseFloat(billRaw);
+3) reject junk -> !Number.isFinite(bill) 
+dont compare a parsed number to ''
+check emptiness before parsing -> const billRaw = billElement.value.trim(); -> let bill = parseFloat(billRaw);
+
+
+Order Of Operations
+the correct flow is
+sanitize once -> compute -> render
+
+Integers & People Input
+people must be an integer >= 1
+best practice: people = Math.max(1, Math.floor(n))
+silently fixes 0 and decimals
+only alert for negatives or non-numeric values
+
+Code Quality Improvements (old -> new)
+before:
+- validation scattered accross multiple functions;
+- repeated DOM reads;
+- globals for computed values;
+- risk of mismatch/NaN
+after:
+- one source of truth (readAndSantitize());
+- local computed values;
+- cleaner flow;
+
+Common Pitfalls:
+using .textContent on <input> should be .value
+checking === '' on already parsed numbers
+
